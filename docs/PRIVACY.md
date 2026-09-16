@@ -4,7 +4,7 @@ Last reviewed: September 15, 2026.
 
 ## The public Fairshare website
 
-There is no personal intake form, account, profile database, analytics integration, external font request, advertising script, or application backend. Our code sets no cookies and uses no local/session storage. Copying the prompt writes that public text to your clipboard; nothing reads your clipboard. Downloading it requests a static text file. Ordinary asset requests still reach the host.
+There is no personal intake form, account, profile database, analytics integration, external font request, advertising script, or application backend. Our code sets no cookies and uses no local/session storage. Copying the prompt writes that public text to your clipboard; nothing reads your clipboard. Downloading it requests a static text file. Ordinary asset requests still reach the host. The supporting illustration and pre-rendered video are hosted with the site; there are no embedded third-party video players. Hosting infrastructure may also set security cookies.
 
 GitHub Pages or another host may process IP addresses and standard access/security logs under its own policy. See [GitHub's privacy statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement). A private Sites preview can also require its hosting provider's authentication. Fairshare cannot promise that hosting infrastructure logs nothing. Public GitHub contributions and their metadata are public.
 

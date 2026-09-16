@@ -15,6 +15,8 @@ for (const button of buttons) {
       status.textContent = "Copied! Open your AI agent and paste to begin.";
     } catch {
       // Move to the always-readable prompt when clipboard permission is denied.
+      const disclosure = prompt.closest("details");
+      if (disclosure) disclosure.open = true;
       prompt.scrollIntoView({ block: "center" });
       prompt.focus({ preventScroll: true });
       const selection = window.getSelection();

@@ -47,13 +47,13 @@ The source directory starts with U.S. resources. Agents must establish jurisdict
 
 ## Privacy by design
 
-The landing page is plain HTML, CSS, and JavaScript. No profile form, backend, analytics, cookies set by our code, advertising scripts, remote fonts, tracking pixels, or browser storage. The copy button writes only the public prompt to your clipboard. It does not read your clipboard. Hosting providers may retain ordinary request logs.
+The landing page is plain HTML, CSS, and JavaScript with locally hosted, pre-rendered media. No profile form, backend, analytics, cookies set by our code, advertising scripts, remote fonts, tracking pixels, or browser storage. The copy button writes only the public prompt to your clipboard. It does not read your clipboard. Hosting providers may retain ordinary request logs.
 
 Do not put personal research into this public repository. `private/`, `personal/`, and `reports/` are ignored as a backstop, not a guarantee; keep personal files outside the checkout whenever possible. Never force-add them. Do not share claims, addresses, receipts, or identification in issues or pull requests.
 
 ## Run the website locally
 
-No package installation or build is needed. Requires Python 3 for the convenience server (any static server also works):
+No package installation or build is needed to run the website. The optional Remotion authoring project has its own dependencies; see [motion/README.md](motion/README.md). Requires Python 3 for the convenience server (any static server also works):
 
 ```sh
 git clone https://github.com/oh-ashen-one/fairshare.git
@@ -69,7 +69,9 @@ Open `http://127.0.0.1:4173`. Stop with Ctrl+C. Clipboard access usually require
 AGENT_GUIDE.md          Vendor-neutral research workflow
 AGENTS.md / CLAUDE.md   Entry points for coding agents
 .cursor/rules/         Cursor pointer to the same guide
-dist/                  Authored, deployable static site and prompt
+dist/                  Authored, deployable static site, prompt, and rendered media
+motion/                Editable Remotion composition and locked authoring toolchain
+art/                   Generated illustration and its prompt/provenance
 docs/                  Privacy, sources, research, contribution guidance
 examples/              Blank intake and report templates
 scripts/validate.py    Static integrity and privacy checks
@@ -86,7 +88,7 @@ node --check dist/app.js
 node --test scripts/test-copy.cjs
 ```
 
-GitHub Actions validates every push/PR. On `main`, the Pages workflow publishes only `dist/`; repository settings must use GitHub Actions as the Pages source. Forks should update repository/website links before enabling their own deployment. The optional `.openai/hosting.json` connects this checkout to the owner’s Sites preview; fork owners should remove it or register their own project before using Sites.
+GitHub Actions validates every push/PR. On `main`, the Pages workflow publishes only `dist/`; repository settings must use GitHub Actions as the Pages source. Forks should update repository/website links before enabling their own deployment. The optional `.openai/hosting.json` connects this checkout to the public ChatGPT Site; fork owners should remove it or register their own project before using Sites.
 
 ## Launch review
 

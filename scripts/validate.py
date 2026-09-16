@@ -28,7 +28,7 @@ class Page(HTMLParser):
             self.in_prompt = True
         if tag == 'form': self.forms += 1
         if tag == 'h1': self.heading_count += 1
-        for key in ('src', 'href'):
+        for key in ('src', 'href', 'poster', 'data-src'):
             if key in a: self.refs.append(a[key])
         if tag == 'script': self.assets.append(a.get('src', ''))
         if tag == 'link' and a.get('rel') == 'stylesheet': self.assets.append(a.get('href', ''))
@@ -58,7 +58,7 @@ for forbidden in ('fetch(', 'XMLHttpRequest', 'sendBeacon', 'localStorage', 'ses
 css = (DIST / 'styles.css').read_text()
 assert '@import' not in css and 'url(http' not in css, 'External CSS/font request'
 for md in ROOT.rglob('*.md'):
-    if '.git' in md.parts: continue
+    if '.git' in md.parts or 'node_modules' in md.parts: continue
     for link in re.findall(r'\]\(([^)]+)\)', md.read_text()):
         if urlsplit(link).scheme or link.startswith('#'): continue
         target = (md.parent / link.split('#')[0]).resolve()

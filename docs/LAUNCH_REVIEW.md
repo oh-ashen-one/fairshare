@@ -2,6 +2,8 @@
 
 Reviewed September 15, 2026 (America/New_York).
 
+> Historical review of the original design. The later visual redesign and media-size changes are recorded in [DESIGN_REVAMP.md](DESIGN_REVAMP.md); the original payload estimate below no longer describes the current site.
+
 ## Verdict
 
 Suitable to share as a free, open-source research guide. The website's copy-and-paste journey works in the tested browser environment. It is not a certified eligibility engine, an exhaustive settlement database, or a guarantee of results across every AI provider.
