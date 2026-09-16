@@ -16,7 +16,7 @@ Suggested opening:
 
 ## 2. Ask for a small, optional starting profile
 
-Use examples/intake.md as a menu, not a mandatory questionnaire. Ask in short batches:
+Use examples/intake.md as a menu, not a mandatory questionnaire. If the user already gave context, use it; do not repeat answered questions. Ask one short optional starting batch, then begin research. Do not turn the menu into a long interview:
 
 1. Country and current/past state or region, with approximate dates when relevant.
 2. Up to 10 apps, software products, subscriptions, services, retailers, or purchased products; approximate years of use/purchase. More can be added later.
@@ -64,7 +64,9 @@ A past qualifying purchase with a closed deadline is not an actionable open clai
 
 ## 6. Deliver an auditable report
 
-Use examples/report.md. Keep an initial summary readable on a phone, then provide candidate details. Include:
+Use examples/report.md. Lead with a short, phone-readable shortlist: **claim → why it may fit → potential payout → deadline → official filing link**. Put proof requirements, unresolved facts, detailed verification, and coverage notes below it. The user should be able to act on the shortlist without reading an audit log.
+
+Show a sourced individual dollar amount or range with its currency (e.g. USD), and label “up to”, estimates, or proportional shares accurately. If unknown, say “not yet determined”; if the benefit is non-cash, say so rather than inventing a dollar value. Never conflate a fund total with an individual payment. Include:
 
 - Research date/time, jurisdiction, anonymized scope, and capability limitations.
 - Verified open candidates first; deadline urgency only when verified.

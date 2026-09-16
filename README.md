@@ -11,7 +11,7 @@
 1. Copy [the Fairshare prompt](dist/prompt.txt) into an agent that can read files and browse the live web. Claude Code, Codex, Cursor, or another capable agent can use the same Markdown instructions; no plugin, paid Fairshare account, or vendor-specific API is required.
 2. Let it read this README and [AGENT_GUIDE.md](AGENT_GUIDE.md).
 3. Share only what you choose: country/state, up to ten products or services and approximate years, and optionally employers, roles, and employment dates. You can skip any field.
-4. Review its dated shortlist and the linked official notices. Ask about gaps and uncertainties.
+4. Get a short list of potential claims: why each may fit, sourced individual payout amounts or “not yet determined”, deadlines, and official filing links. Supporting details follow the shortlist.
 5. If a match appears to fit, use the verified official site to review and submit your own claim.
 
 **No browsing available?** Download this repository using GitHub’s Code → Download ZIP, or clone it. Give the agent the README and AGENT_GUIDE. Without live research, it must provide a research checklist, not current eligibility claims. If a chat cannot follow repository links, attach those files explicitly.
@@ -83,9 +83,14 @@ scripts/validate.py    Static integrity and privacy checks
 ```sh
 python3 scripts/validate.py
 node --check dist/app.js
+node --test scripts/test-copy.cjs
 ```
 
 GitHub Actions validates every push/PR. On `main`, the Pages workflow publishes only `dist/`; repository settings must use GitHub Actions as the Pages source. Forks should update repository/website links before enabling their own deployment. The optional `.openai/hosting.json` connects this checkout to the owner’s Sites preview; fork owners should remove it or register their own project before using Sites.
+
+## Launch review
+
+See [the launch review](docs/LAUNCH_REVIEW.md) for corrected issues, browser checks, the 5,000-visitor capacity estimate, and explicit testing limits.
 
 ## Why this exists
 

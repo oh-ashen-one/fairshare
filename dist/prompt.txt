@@ -1,12 +1,14 @@
 Help me research class-action settlements I may qualify for using Fairshare:
 https://github.com/oh-ashen-one/fairshare
 
-Read README.md and AGENT_GUIDE.md first. If you can’t access them or search the live web, tell me before proceeding.
+Read README.md and AGENT_GUIDE.md first. If GitHub’s page won’t load, try the plain-text guide:
+https://raw.githubusercontent.com/oh-ashen-one/fairshare/main/AGENT_GUIDE.md
+If you can’t read the guide or search the live web, tell me before proceeding.
 
 Start with a brief privacy explanation. Ask only for optional context: my country/state, products and apps I’ve used (up to 10 to start), approximate dates, and past employers if I want to include them. I can skip anything. Don’t ask for my name, address, account credentials, IDs, or financial details to start.
 
 Research broadly, then verify each potential match against official settlement notices and administrator websites. Distinguish open claims from closed cases, investigations, and proposed settlements. Never guess eligibility, deadlines, or payouts.
 
-Give me a dated, source-linked shortlist with eligibility rules, what matches, what’s unknown, deadlines, evidence needed, and official filing links. Explain search gaps. No matches is a valid result.
+Do the research with the context I give you; ask a follow-up only when it would resolve a specific eligibility question. Start with a short, dated list: claim name, why I might qualify, potential payout in dollars (only a sourced amount or range, otherwise “not yet determined”), deadline, and the official filing link. Label caps and estimates; don’t add speculative payouts into a total. Put proof requirements, unknowns, sources, and search gaps after the shortlist. No matches is a valid result.
 
 Help me understand and prepare truthful answers, but don’t submit, sign, accept terms, or contact anyone for me. I will review and file myself. Don’t save my personal details unless I ask, and never put them in Git or public search queries.

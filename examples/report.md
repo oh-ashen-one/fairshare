@@ -13,9 +13,11 @@ Template only — no live opportunities or real claimant information.
 
 ## Verified open candidates
 
-| Case | Match assessment | Claim deadline | Main unknown | Official source |
+Use short cards on narrow screens, or this table when it stays readable. Lead with these results; put supporting detail below.
+
+| Claim | Why it may fit | Potential payout | Deadline | File yourself |
 | --- | --- | --- | --- | --- |
-| [case] | [potential match / needs information] | [date, timezone or unspecified; received/postmark rule] | [fact to confirm] | [linked notice] |
+| [case + potential match / needs information] | [one sentence; decisive unknown if any] | [sourced individual amount/range + currency; label cap/estimate; or “not yet determined” / non-cash] | [verified date] | [verified official claim link] |
 
 ### [Case caption]
 
