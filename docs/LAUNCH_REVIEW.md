@@ -20,6 +20,7 @@ Public entry point: https://oh-ashen-one.github.io/fairshare/
 | Some metadata and controls were too small | Increased small text and touch areas; body copy uses 16px at the default size and text sizes use rem units |
 | Illustration caption and step numbers fell below the targeted text contrast ratio | Darkened their colors; the follow-up computed text check found no failures among 127 rendered text-bearing elements |
 | Header/heading overflow at 200% text | Header wraps and headings reflow; confirmed no document overflow at 320px and 390px in the enlarged-text fixture |
+| Returning visitors could combine new HTML with a cached old script | CSS and JavaScript links now include content hashes; validation rejects stale asset versions |
 | No-script copy button could be inert | Button is hidden until its script loads; first-screen link still reaches the selectable prompt and download, with a noscript explanation |
 | Clipboard failure needed an obvious recovery path | Focuses/scrolls to/selects the prompt and explains manual copy/download; handles a missing clipboard API or missing selection object |
 
@@ -42,7 +43,7 @@ The local QA fixtures live outside dist/ and are not deployed. To inspect the en
 
 ## Capacity assessment for 5,000 visitors
 
-At review time, all public files totaled 32,494 bytes before HTTP compression. Five thousand downloads of the entire set are approximately 162 MB, excluding protocol overhead, repeats, and repository reads. The normal page doesn't automatically download prompt.txt. Hosting compression and cache reuse can reduce transfer further.
+At review time, all public files totaled 32,524 bytes before HTTP compression. Five thousand downloads of the entire set are approximately 163 MB, excluding protocol overhead, repeats, and repository reads. The normal page doesn't automatically download prompt.txt. Hosting compression and cache reuse can reduce transfer further.
 
 There is no Fairshare database, login service, server-side search, shared AI quota, job queue, or per-user computation. The host serves static files, and each visitor performs research through their own agent/provider. Website traffic does not queue settlement research on a shared Fairshare server.
 

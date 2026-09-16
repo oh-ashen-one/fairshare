@@ -7,6 +7,7 @@ Thank you for helping people research more clearly.
 - Keep AGENT_GUIDE.md canonical. Agent-specific files should point to it rather than drift into separate workflows.
 - Preserve the user-controlled filing boundary and optional intake. No trackers, profile forms, backend, paid funnel, affiliate redirects, or unsupported guarantees.
 - Keep the static site accessible, mobile-first, dependency-free, and readable without JavaScript. Use relative asset paths so GitHub Pages project paths work.
+- After changing app.js or styles.css, update its index.html `?v=` value to the first 12 characters of the asset’s SHA-256. Validation checks this to prevent mixed cached releases.
 - When changing the visible prompt, update dist/prompt.txt to the exact same text.
 - Run `python3 scripts/validate.py` `node --check dist/app.js`, and `node --test scripts/test-copy.cjs`. For design changes, manually check narrow and wide screens, keyboard navigation, 200% text size, reduced motion, FAQs, clipboard failure, and text download in your browser; report which checks you actually performed.
 - Don't edit .openai/hosting.json to target another owner's project. Forks should remove or replace that optional deployment configuration.

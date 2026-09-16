@@ -3,6 +3,8 @@ from pathlib import Path
 from html.parser import HTMLParser
 from urllib.parse import urlsplit
 import re
+import hashlib
+from urllib.parse import parse_qs
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / 'dist'
@@ -47,6 +49,9 @@ for ref in page.refs:
         assert (DIST / urlsplit(ref).path).is_file(), f'Missing asset: {ref}'
 for asset in page.assets:
     assert asset and not urlsplit(asset).scheme, f'Unexpected external/inline asset: {asset}'
+    parts = urlsplit(asset)
+    expected = hashlib.sha256((DIST / parts.path).read_bytes()).hexdigest()[:12]
+    assert parse_qs(parts.query).get('v') == [expected], f'Stale asset version: {asset}'
 js = (DIST / 'app.js').read_text()
 for forbidden in ('fetch(', 'XMLHttpRequest', 'sendBeacon', 'localStorage', 'sessionStorage', 'document.cookie', 'clipboard.read'):
     assert forbidden not in js, f'Privacy-sensitive API needs review: {forbidden}'
