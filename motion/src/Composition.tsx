@@ -1,16 +1,31 @@
 import React from 'react';
-import {AbsoluteFill, Composition, Img, interpolate, useCurrentFrame, staticFile, Easing} from 'remotion';
+import {AbsoluteFill, Composition, interpolate, useCurrentFrame, Easing} from 'remotion';
 
-export const ResearchFlow: React.FC = () => {
-  const frame = useCurrentFrame();
-  return <AbsoluteFill style={{background:'#edf3ff',fontFamily:'Arial, sans-serif',color:'#14213d'}}>
-    <Img src={staticFile('research-lens.webp')} style={{position:'absolute',width:800,height:534,top:-8,objectFit:'cover',scale:interpolate(frame,[0,143],[1.035,1],{extrapolateRight:'clamp',easing:Easing.bezier(.2,.8,.2,1)})}}/>
-    <div style={{position:'absolute',left:48,right:48,bottom:44,display:'flex',gap:16}}>
-      {['Your context','Official sources','Your shortlist'].map((label,i)=><div key={label} style={{flex:1,background:'rgba(255,255,255,.96)',border:'1px solid #dbe4f5',borderRadius:20,padding:'24px 12px',textAlign:'center',opacity:interpolate(frame,[i*25,i*25+18],[.34,1],{extrapolateLeft:'clamp',extrapolateRight:'clamp'}),translate:`0 ${interpolate(frame,[i*25,i*25+20],[8,0],{extrapolateLeft:'clamp',extrapolateRight:'clamp'})}px`}}>
-        <div style={{width:34,height:34,margin:'0 auto 16px',borderRadius:50,background:frame>i*25+18?'#285beb':'#e7edfc',color:frame>i*25+18?'white':'#607394',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,fontWeight:700}}>{frame>i*25+18?'✓':i+1}</div>
-        <div style={{fontSize:23,fontWeight:600,letterSpacing:-.4}}>{label}</div>
-      </div>)}
-    </div>
-  </AbsoluteFill>;
+type Phase='context'|'search'|'verify'|'results';
+type Props={phase:Phase;portrait:boolean};
+const labels={context:'Your context',search:'Search the web',verify:'Check the rules',results:'Your shortlist'};
+const easing=Easing.bezier(.16,1,.3,1);
+export const AgentDemo:React.FC<Props>=({phase,portrait})=>{
+ const f=useCurrentFrame();
+ const size=portrait?34:25;
+ const text={fontSize:size,lineHeight:1.45};
+ const card={border:'1px solid #29354d',borderRadius:18,background:'#152038',padding:portrait?28:25};
+ const reveal=(start:number)=>({opacity:interpolate(f,[start,start+12],[0,1],{extrapolateLeft:'clamp' as const,extrapolateRight:'clamp' as const}),translate:`0 ${interpolate(f,[start,start+15],[12,0],{extrapolateLeft:'clamp' as const,extrapolateRight:'clamp' as const,easing})}px`});
+ const tick=(label:string,n:number,unknown=false)=><div key={label} style={{display:'flex',alignItems:'center',gap:16,padding:'18px 0',borderBottom:'1px solid #29354d',...reveal(n)}}><span style={{color:unknown?'#f1d39d':'#9bf0d0',fontSize:size+3}}>{unknown?'○':'✓'}</span><span style={text}>{label}</span></div>;
+ return <AbsoluteFill style={{background:'#0d1629',color:'#f1f5fe',fontFamily:'Arial, sans-serif',padding:portrait?36:38}}>
+  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',paddingBottom:portrait?28:20,borderBottom:'1px solid #29354d'}}><div style={{display:'flex',alignItems:'center',gap:14}}><span style={{width:12,height:12,background:'#9bf0d0',borderRadius:20}}/><span style={{fontSize:portrait?25:20,letterSpacing:1}}>FAIRSHARE / AGENT VIEW</span></div><span style={{fontSize:portrait?21:17,color:'#acb8cc'}}>EXAMPLE</span></div>
+  <div style={{display:'flex',gap:32,flex:1,paddingTop:portrait?32:26}}>
+   {!portrait&&<div style={{width:180,flexShrink:0,paddingTop:5}}>{(Object.keys(labels) as Phase[]).map((p,i)=><div key={p} style={{fontSize:18,padding:'15px 12px',borderRadius:9,color:p===phase?'#9bf0d0':'#91a0ba',background:p===phase?'#1b3040':'transparent',marginBottom:6}}><span style={{marginRight:10,fontSize:15}}>0{i+1}</span>{labels[p]}</div>)}<div style={{fontSize:16,color:'#8797b0',lineHeight:1.6,marginTop:24,paddingLeft:12}}>In your agent.<br/>Not on our servers.</div></div>}
+   <div style={{flex:1,minWidth:0}}>
+    <div style={{fontSize:portrait?22:17,color:'#99add0',letterSpacing:1.5,marginBottom:10}}>{phase==='context'?'01 / OPTIONAL INPUT':phase==='search'?'02 / DISCOVERY':phase==='verify'?'03 / VERIFICATION':'04 / YOUR NEXT STEPS'}</div>
+    <h2 style={{fontSize:portrait?45:36,letterSpacing:-1.2,fontWeight:500,margin:'0 0 24px'}}>{phase==='context'?'A few details are enough.':phase==='search'?'Follow the evidence.':phase==='verify'?'A match needs proof.':'Clear answers. Your call.'}</h2>
+    {phase==='context'&&<><div style={{...card,...reveal(0)}}><div style={{fontSize:size-7,color:'#9bf0d0',marginBottom:14}}>YOU CHOOSE WHAT TO SHARE</div><div style={{fontSize:portrait?36:27,lineHeight:1.55}}>“I used ExampleApp in California{portrait?<br/>:' '}from 2021 to 2023.”</div></div><div style={{display:'flex',gap:12,flexWrap:'wrap',marginTop:20,...reveal(22)}}>{['Service','Location','Approximate dates'].map(t=><span key={t} style={{fontSize:size-7,padding:'10px 16px',borderRadius:8,background:'#1d2c45',color:'#bac9e2'}}>{t}</span>)}</div><div style={{...text,color:'#aab8cd',marginTop:25,...reveal(38)}}>No name needed. Skip anything.</div></>}
+    {phase==='search'&&<><div style={{...card,padding:portrait?24:20,...reveal(0)}}><span style={{color:'#9bf0d0',marginRight:12,fontSize:size}}>⌕</span><span style={{fontSize:portrait?28:22}}>ExampleApp settlement official notice</span></div><div style={{marginTop:20,...card,paddingTop:8,paddingBottom:8}}>{['Find possible cases','Locate official notices','Check the latest claim status'].map((s,i)=>tick(s,12+i*15))}</div><div style={{fontSize:size-7,color:'#aab8cd',marginTop:18,...reveal(55)}}>News is a lead. Official documents are the source.</div></>}
+    {phase==='verify'&&<><div style={{...card,paddingTop:12,paddingBottom:12}}><div style={{fontSize:size-7,color:'#9bf0d0',padding:'8px 0 4px'}}>OFFICIAL NOTICE → YOUR CONTEXT</div>{tick('Location matches the class',5)}{tick('Usage dates fall in range',20)}{tick('Evidence still needs your review',35,true)}</div><div style={{fontSize:size-5,color:'#b9c7de',marginTop:22,...reveal(52)}}>Unknowns stay visible. Eligibility is never assumed.</div></>}
+    {phase==='results'&&<><div style={{...card,...reveal(0)}}><div style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:10}}><div style={{fontSize:size,fontWeight:600}}>ExampleApp</div><span style={{fontSize:size-10,color:'#9bf0d0',background:'#233d3a',padding:'7px 11px',borderRadius:6}}>POTENTIAL MATCH</span></div><div style={{fontSize:portrait?74:64,fontWeight:500,letterSpacing:-3,marginTop:portrait?22:10,...reveal(15)}}>$20–$60</div><div style={{fontSize:size-9,color:'#aab8cd'}}>Illustrative estimate · not a live claim</div><div style={{display:'flex',alignItems:'center',justifyContent:'space-between',borderTop:'1px solid #34415b',marginTop:20,paddingTop:20,...reveal(28)}}><span style={{fontSize:size-6,color:'#c5d0e2'}}>Rules + deadline</span><span style={{fontSize:size-6,color:'#9bf0d0'}}>Official claim page ↗</span></div></div><div style={{...text,marginTop:22,color:'#c3d0e5',...reveal(45)}}>Review the details. File it yourself.</div></>}
+   </div>
+  </div>
+  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',borderTop:'1px solid #29354d',paddingTop:18,marginTop:20,fontSize:portrait?20:16,color:'#8294b1'}}><span>Illustrative workflow · fictional service and amounts</span><span style={{color:'#9bf0d0'}}>↗</span></div>
+ </AbsoluteFill>;
 };
-export const MyComposition = () => <Composition id="ResearchFlow" component={ResearchFlow} durationInFrames={144} fps={30} width={800} height={680}/>;
+export const MyComposition=()=> <>{(['context','search','verify','results'] as Phase[]).flatMap(phase=>[false,true].map(portrait=><Composition key={`${phase}-${portrait}`} id={`${phase}-${portrait?'mobile':'desktop'}`} component={AgentDemo} defaultProps={{phase,portrait}} durationInFrames={96} fps={30} width={portrait?720:1080} height={portrait?850:650}/>))}</>;

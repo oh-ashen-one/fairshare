@@ -1,26 +1,19 @@
-const {test}=require('node:test');
-const assert=require('node:assert/strict');
-const fs=require('node:fs');
-const vm=require('node:vm');
-const path=require('node:path');
-const code=fs.readFileSync(path.join(__dirname,'../dist/motion.js'),'utf8');
-function setup({reduced=false,saveData=false,blocked=false}={}){
- const handlers={},events={};let observer,plays=0,pauses=0;
- const preference={matches:reduced,addEventListener:(_,fn)=>events.preference=fn};
- const video={dataset:{src:'assets/research-flow.mp4'},poster:'assets/research-flow.jpg',paused:true,parentElement:{style:{}},addEventListener:(name,fn)=>handlers[name]=fn,play(){plays++;if(blocked)return Promise.reject(new Error('Autoplay denied'));this.paused=false;handlers.playing();return Promise.resolve();},pause(){pauses++;this.paused=true;handlers.pause();}};
- const button={hidden:true,setAttribute(name,value){this[name]=value;},addEventListener:(_,fn)=>events.click=fn};
- const overlay={hidden:true,addEventListener:(_,fn)=>events.overlay=fn};
- const doc={hidden:false,getElementById:id=>({'research-motion':video,'motion-toggle':button,'motion-overlay':overlay}[id]),addEventListener:(_,fn)=>events.visibility=fn};
- class Observer{constructor(fn){observer=fn;}observe(){}}
- vm.runInNewContext(code,{document:doc,window:{matchMedia:()=>preference,IntersectionObserver:Observer},navigator:{connection:{saveData}},IntersectionObserver:Observer});
- return {video,button,overlay,doc,events,preference,handlers,visible(ratio=1){observer([{isIntersecting:ratio>0,intersectionRatio:ratio}]);},state:()=>({plays,pauses})};
+const {test}=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const vm=require('node:vm');const path=require('node:path');const code=fs.readFileSync(path.join(__dirname,'../dist/motion.js'),'utf8');
+function setup({small=false,reduced=false,saveData=false,blocked=false}={}){
+ let observer,plays=0;const handlers={},events={};const mobile={matches:small,addEventListener:(_,fn)=>events.resize=fn},reduce={matches:reduced,addEventListener:(_,fn)=>events.reduce=fn};
+ const tabs=['context','search','verify','results'].map(phase=>({id:'stage-'+phase,dataset:{phase,desktopSrc:`${phase}-desktop.mp4`,mobileSrc:`${phase}-mobile.mp4`,desktopPoster:`${phase}-desktop.jpg`,mobilePoster:`${phase}-mobile.jpg`},setAttribute(k,v){this[k]=v;},events:{},addEventListener(k,v){this.events[k]=v;},focus(){this.focused=true;}}));
+ const video={paused:true,addEventListener:(k,v)=>handlers[k]=v,removeAttribute(k){delete this[k];},load(){},pause(){this.paused=true;},play(){plays++;if(blocked)return Promise.reject(new Error('blocked'));this.paused=false;handlers.playing?.();return Promise.resolve();}};
+ const button={hidden:true,addEventListener:(_,fn)=>events.play=fn};const panel={setAttribute(k,v){this[k]=v;}};const desc={};const doc={hidden:false,getElementById:id=>({'research-motion':video,'demo-play':button,'demo-panel':panel,'demo-description':desc}[id]),querySelectorAll:()=>tabs,addEventListener:(_,fn)=>events.visibility=fn};class Observer{constructor(fn){observer=fn;}observe(){}}
+ vm.runInNewContext(code,{document:doc,window:{matchMedia:q=>q.includes('700px')?mobile:reduce,IntersectionObserver:Observer},navigator:{connection:{saveData}},IntersectionObserver:Observer});
+ return {tabs,video,button,panel,desc,doc,mobile,reduce,events,handlers,visible(ratio=1){observer([{isIntersecting:ratio>0,intersectionRatio:ratio}]);},plays:()=>plays};
 }
-for(const options of [{reduced:true},{saveData:true}])test(`poster and explicit play for ${JSON.stringify(options)}`,()=>{const x=setup(options);x.visible();assert.equal(x.video.src,undefined);assert.equal(x.overlay.hidden,false);assert.equal(x.button.hidden,false);});
-test('waits for half visibility and loops muted inline',()=>{const x=setup();x.visible(.3);assert.equal(x.video.src,undefined);x.visible(.5);assert.equal(x.state().plays,1);assert(x.video.loop&&x.video.muted&&x.video.defaultMuted&&x.video.playsInline);assert(x.overlay.hidden);});
-test('pauses offscreen and resumes when visible',()=>{const x=setup();x.visible();x.visible(0);assert(x.video.paused);x.visible();assert.equal(x.state().plays,2);});
-test('manual pause survives leaving and returning',()=>{const x=setup();x.visible();x.events.click();x.visible(0);x.visible();assert.equal(x.state().plays,1);assert(x.video.paused);x.events.overlay();assert.equal(x.state().plays,2);});
-test('explicit play works with reduced motion',()=>{const x=setup({reduced:true});x.visible();x.events.overlay();assert.equal(x.state().plays,1);assert(x.overlay.hidden);});
-test('blocked autoplay exposes the large play affordance',async()=>{const x=setup({blocked:true});x.visible();await Promise.resolve();assert.equal(x.overlay.hidden,false);assert.match(x.button.textContent,/Play animation/);});
-test('preference change pauses active playback',()=>{const x=setup();x.visible();x.preference.matches=true;x.events.preference();assert(x.video.paused);});
-test('background tab pauses and foreground resumes',()=>{const x=setup();x.visible();x.doc.hidden=true;x.events.visibility();assert(x.video.paused);x.doc.hidden=false;x.events.visibility();assert.equal(x.state().plays,2);});
-test('failed media preserves poster and explains failure',()=>{const x=setup();x.handlers.error();assert(x.video.hidden);assert(x.button.disabled);assert.match(x.button.textContent,/unavailable/);assert.match(x.video.parentElement.style.backgroundImage,/research-flow.jpg/);});
+test('first stage loads only when visible and does not loop',()=>{const x=setup();assert.equal(x.video.src,undefined);x.visible();assert.equal(x.video.src,'context-desktop.mp4');assert.equal(x.video.loop,false);});
+test('mobile gets a dedicated portrait poster and clip',()=>{const x=setup({small:true});assert.equal(x.video.poster,'context-mobile.jpg');x.visible();assert.equal(x.video.src,'context-mobile.mp4');});
+test('selecting a stage updates media, explanation and ARIA',()=>{const x=setup();x.visible();x.tabs[3].events.click();assert.equal(x.video.src,'results-desktop.mp4');assert.equal(x.tabs[3]['aria-selected'],'true');assert.equal(x.tabs[0].tabIndex,-1);assert.equal(x.panel['aria-labelledby'],'stage-results');assert.match(x.desc.textContent,/fictional/);});
+for(const setting of [{reduced:true},{saveData:true}])test('preferences retain posters but permit explicit play '+JSON.stringify(setting),()=>{const x=setup(setting);x.visible();x.tabs[1].events.click();assert.equal(x.plays(),0);assert.equal(x.video.poster,'search-desktop.jpg');x.events.play();assert.equal(x.plays(),1);});
+test('blocked autoplay retains watch control',async()=>{const x=setup({blocked:true});x.visible();await Promise.resolve();assert.equal(x.button.hidden,false);});
+test('clip completion offers replay without a pause control',()=>{const x=setup();x.visible();x.handlers.ended();assert.equal(x.button.hidden,false);assert.match(x.button.textContent,/Replay/);});
+test('tab keyboard navigation wraps and moves focus',()=>{const x=setup();x.visible();let prevented=false;x.tabs[0].events.keydown({key:'ArrowLeft',preventDefault(){prevented=true;}});assert(prevented);assert(x.tabs[3].focused);assert.equal(x.video.src,'results-desktop.mp4');});
+test('breakpoint changes use the corresponding poster',()=>{const x=setup();x.visible();x.mobile.matches=true;x.events.resize();assert.equal(x.video.poster,'context-mobile.jpg');assert.equal(x.video.src,undefined);});
+test('offscreen and background pause silently',()=>{const x=setup();x.visible();x.visible(0);assert(x.video.paused);x.visible();x.events.play();x.doc.hidden=true;x.events.visibility();assert(x.video.paused);});
+test('failed media keeps a poster and retry affordance',()=>{const x=setup();x.visible();x.handlers.error();assert.equal(x.video.src,undefined);assert.match(x.video.poster,/jpg/);assert.match(x.button.textContent,/Retry/);});

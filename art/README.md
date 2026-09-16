@@ -1,3 +1,5 @@
+> Archived artwork from the earlier design. The current website uses the interactive Remotion agent walkthrough instead.
+
 # Fairshare supporting artwork
 
 Generated with the built-in Codex image-generation tool for the September 15, 2026 redesign. One image requested and selected; no external stock assets. The unchanged generated source is research-lens.png. An optimized WebP copy is used by Remotion to produce the site's poster and animation.

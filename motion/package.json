@@ -29,8 +29,7 @@
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc",
-    "render": "remotion render src/index.ts ResearchFlow ../dist/assets/research-flow.mp4 --codec=h264 --crf=25 --concurrency=2",
-    "poster": "remotion still src/index.ts ResearchFlow ../dist/assets/research-flow.jpg --frame=143"
+    "render": "node render-demo.mjs"
   },
   "sideEffects": [
     "*.css"

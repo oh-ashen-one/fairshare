@@ -28,7 +28,7 @@ class Page(HTMLParser):
             self.in_prompt = True
         if tag == 'form': self.forms += 1
         if tag == 'h1': self.heading_count += 1
-        for key in ('src', 'href', 'poster', 'data-src'):
+        for key in ('src', 'href', 'poster', 'data-src', 'data-desktop-src', 'data-mobile-src', 'data-desktop-poster', 'data-mobile-poster'):
             if key in a: self.refs.append(a[key])
         if tag == 'script': self.assets.append(a.get('src', ''))
         if tag == 'link' and a.get('rel') == 'stylesheet': self.assets.append(a.get('href', ''))
