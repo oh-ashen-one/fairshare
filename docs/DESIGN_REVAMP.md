@@ -32,3 +32,11 @@ Sampled frames at 0, 1, 2, 3, and 4 seconds were inspected. The artwork stays st
 - The unchanged visible/downloaded prompt remains identical. Static asset URLs use content hashes.
 
 These are scoped browser and source checks, not a complete physical-device or screen-reader certification. The earlier launch review's 33 KB site estimate predates the requested media and no longer applies. All site media remains static; there is still no shared AI backend or personal-data intake.
+
+## Mobile playback follow-up
+
+A user reported no visible animation on their phone. The initial one-shot clip could finish while they read the copy, and autoplay rejection offered only a small control. This was an identified design weakness; the user's exact browser/device cause was not reproduced.
+
+The site now loops while at least half of the illustration is visible, pauses off-screen/in background tabs, and preserves a deliberate user pause. Muted/inline properties are explicitly set before source loading. A large Play animation overlay appears whenever playback is stopped or rejected. Reduced-motion and data-saving defaults still avoid autoplay; users can explicitly play. The hero text and artwork also have brief native entrance transitions when reduced motion is off. The settlement prompt remains unchanged.
+
+Fifteen combined automated copy/playback checks passed, including simulated autoplay rejection, reduced motion, save-data, explicit play/pause, viewport return, and tab visibility. A 390px browser check confirmed visible playback, overlay play/pause, off-screen pause and return/resume without horizontal overflow. Physical phone confirmation remains with the user.

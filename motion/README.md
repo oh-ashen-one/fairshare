@@ -22,6 +22,6 @@ The composition is `ResearchFlow`: 800 × 680 pixels, 30 fps, 144 frames. It rev
 - Site video: ../dist/assets/research-flow.mp4
 - Generation prompt and provenance: ../art/README.md
 
-The web page plays the video once when visible, without sound. Reduced-motion and data-saving preferences default to the poster. Play/pause/replay remains user-controlled. Remotion and React are build-time dependencies only; no React/Remotion runtime ships to visitors.
+The web page loops the video while at least half-visible, without sound, and pauses it off-screen or in a background tab. Reduced-motion and data-saving preferences default to the poster. Play/pause/replay remains user-controlled. Remotion and React are build-time dependencies only; no React/Remotion runtime ships to visitors.
 
 Original code is MIT licensed with the repository. Third-party dependencies retain their own licenses, including Remotion's applicable terms.
